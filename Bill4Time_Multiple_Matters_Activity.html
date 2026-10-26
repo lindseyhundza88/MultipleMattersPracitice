@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Activity – Multiple Matters, One Entry (Bill4Time)</title>
+<style>
+:root{--blue:#2a48a2;--btn:#3777e0;--ylw:#fcc10a;--red:#c0282d;--grn:#1f5c2a;--tint:#e4ebf8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:#222;background:#e8edf3;padding:14px}
+#app{max-width:1020px;margin:0 auto}
+.panel{background:#fff;border:1px solid #c5ccd8;border-radius:3px;overflow:hidden;margin-bottom:10px}
+.ph{background:var(--blue);color:#fff;font-weight:700;font-size:14px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tools{display:flex;gap:8px;align-items:center}
+.pill{background:#6c85d6;border-radius:10px;font-size:10px;padding:2px 10px;font-weight:600}
+.hbtn{background:transparent;border:1px solid #9fb2e6;color:#fff;border-radius:4px;font-size:11px;padding:4px 11px;cursor:pointer;font-family:inherit}
+.hbtn:hover{background:#3a58b4}
+.scn{background:#c9d6ee;color:#1d2f66;font-size:12.5px;padding:10px 16px;line-height:1.45}
+.sh{color:#fff;font-weight:700;font-size:12px;padding:9px 16px}.sh.b{background:var(--blue)}.sh.g{background:var(--grn)}
+.bd{padding:16px 18px;font-size:13.5px;line-height:1.5}
+.bd ol{margin:8px 0 0;padding-left:20px;font-size:13px}
+.bt{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.pbtn{border:0;border-radius:5px;padding:10px 18px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--btn);color:#fff;font-family:inherit}
+.pbtn:hover{background:#2a68d0}.pbtn.s{background:#fff;color:var(--blue);border:2px solid var(--blue)}.pbtn.s:hover{background:#eef2fb}
+#prog{display:flex;align-items:center;gap:10px;margin:8px 2px 10px;font-size:11px;color:#666}
+#prog .tr{flex:1;height:7px;background:#cdd5e4;border-radius:4px;overflow:hidden}
+#prog .fl{height:100%;background:var(--blue);width:0;transition:width .35s}
+/* scenario box */
+.sbox{background:#fff8e3;border:1px solid #e8c15a;border-radius:4px;padding:14px 16px;margin-bottom:10px;font-size:12.5px;line-height:1.5}
+.data{background:#fff;border:1px solid #e8c15a;border-radius:3px;padding:10px 14px;margin:10px 0;font-family:"Courier New",monospace;font-size:11.5px;line-height:1.75}
+.rem{background:#e8effb;border:1px solid #b7c8ea;border-radius:3px;padding:7px 12px;font-size:11.5px;color:#1d2f66}
+/* guided prompt */
+.prompt{margin:0;background:#e8effb;border-bottom:1px solid #b7c8ea;padding:11px 16px;font-size:13.5px;line-height:1.45;color:#1d2f66}
+.prompt .q{color:var(--red);font-weight:700;margin-right:6px}
+.prompt .sample{display:block;margin-top:8px;background:#fff;border:1px dashed #8fa4d6;border-radius:3px;padding:7px 10px;font-family:"Courier New",monospace;font-size:11px;white-space:pre-wrap;color:#222;user-select:text}
+.tbtn{margin-top:8px;border:0;border-radius:4px;background:var(--ylw);color:#111;font-weight:700;font-size:12px;padding:6px 12px;cursor:pointer;font-family:inherit}
+/* form */
+.win{margin:12px 14px 14px;border:1px solid #b8bfcc;background:#fff}
+.bar{height:30px;background:var(--blue);color:#fff;font-weight:700;font-size:12px;padding:8px 14px;position:relative}
+.bar .tm{position:absolute;right:12px;top:0;line-height:30px;font-size:11px;font-weight:600}
+.fm{padding:8px 16px 4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;column-gap:46px}
+.row{display:grid;grid-template-columns:104px 1fr;align-items:center;gap:10px;padding:4px 0;border-bottom:1px solid #eee;min-height:30px}
+.row>label{text-align:right;font-size:11.5px;color:#444}
+.row>label.req{color:var(--red)}
+.fld{display:block;height:22px;border:1px solid #bbb;background:#ececec;font-size:11px;padding:3px 8px;line-height:15px;width:100%;max-width:230px;color:#333;font-family:inherit}
+.fld.t{background:var(--tint);border-color:#b9c8e6;color:#1d3a8a;font-weight:700}
+.fld.sm{max-width:170px}
+.plain{font-size:11.5px;color:#333}
+.chk{width:12px;height:12px;border:1px solid #aaa;background:#eee;border-radius:2px;display:inline-block;font-size:9px;line-height:10px;text-align:center;color:#888}
+.sel{max-width:none;height:24px;padding:2px 6px;background:#fff;border:1px solid #999;font-size:11.5px;font-family:inherit;color:#111;width:100%}
+.sel.ok{background:#e3f6e8;border-color:#4caf6a;color:#14502a}
+.tick{color:#1f8a3a;font-weight:700;margin-left:8px;font-size:15px}
+.dh{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:12px 0 4px;font-size:11.5px}
+.dh .hint{font-size:9.5px;font-style:italic;color:#2f5fb8;text-align:right;line-height:1.35}
+textarea{width:100%;height:112px;resize:vertical;border:1px solid #a9a9a9;background:var(--tint);padding:9px 10px;font:12.5px/1.45 "Segoe UI",Arial,sans-serif;color:#111;outline:none;user-select:text}
+textarea:focus{border-color:#4a76d4;box-shadow:0 0 0 1px #4a76d4}
+textarea.ok{background:#eefaf0;border-color:#4caf6a}
+textarea.bad{background:#fff4f4;border-color:#d98a8a}
+.cnt{text-align:right;font-size:10px;color:#999;margin:3px 0 2px}
+.cb{font-size:11px;display:flex;align-items:center;gap:6px;margin:4px 0 8px}
+.tg{border-top:1px solid #ddd;padding:6px 0 8px}
+.get{font-size:10px;color:#2f5fb8;margin-left:10px}
+.foot{background:#eee;border-top:1px solid #dcdcdc;display:flex;align-items:center;gap:5px;padding:10px 14px}
+.fb{height:30px;padding:0 15px;font-size:11px;font-weight:600;border:1px solid #bbb;background:#f7f7f7;color:#222;cursor:pointer;font-family:inherit;border-radius:2px}
+.fb.p{background:var(--blue);border-color:var(--blue);color:#fff}.fb.p:hover{background:#1f3a8a}
+.fb.d{background:#e3e3e3;color:#aaa;cursor:not-allowed}
+.fb:not(.d):not(.p):hover{background:#e9e9e9}
+.sp{flex:1}
+#fbk{display:none;margin:0;padding:11px 18px;font-size:12.5px;border-top:1px solid;line-height:1.45}
+#fbk.ok{background:#e6f5ea;border-color:#9fd3ad;color:#14502a}
+#fbk.no{background:#fff4e0;border-color:#efc77a;color:#6a4300}
+#fbk ul{margin:5px 0 0;padding-left:20px}
+.hl{outline:3px solid var(--ylw);outline-offset:2px;box-shadow:0 0 0 5px rgba(0,0,0,.25),0 0 14px 4px rgba(252,193,10,.85);animation:pulse 1.2s infinite;position:relative;z-index:3}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 5px rgba(0,0,0,.18),0 0 6px 1px rgba(252,193,10,.7)}50%{box-shadow:0 0 0 5px rgba(0,0,0,.18),0 0 18px 6px rgba(252,193,10,.95)}}
+.shake{animation:shake .35s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-14px);z-index:50;max-width:88%;padding:9px 16px;border-radius:6px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 3px 12px rgba(0,0,0,.3);text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.warn{background:#fff3d1;border:1px solid #f0b429;color:#5a3a00}#toast.ok{background:#dff5e6;border:1px solid #3fae67;color:#0d4a24}#toast.info{background:#e3edff;border:1px solid #6b93e6;color:#17316f}
+.done .dh2{background:var(--grn);color:#fff;font-weight:700;font-size:14px;padding:11px 16px}
+.model{background:#f0faf2;border:1px solid #4caf6a;border-radius:3px;padding:10px 14px;margin:6px 0 12px;font-family:"Courier New",monospace;font-size:11.5px;line-height:1.7;white-space:pre-wrap}
+.done ul.k{margin:6px 0 0;padding-left:20px;font-size:12.5px;line-height:1.7}
+.df{background:#eee;border-top:1px solid #ddd;padding:10px 18px;text-align:right}
+.so{background:#f1f1f1;border:1px solid #9b9b9b;border-radius:3px;padding:7px 16px;font-size:12px;cursor:pointer;font-family:inherit}.so:hover{background:#e3e3e3}
+@media(max-width:700px){.g2{grid-template-columns:1fr}.dh{flex-direction:column;align-items:flex-start}.dh .hint{text-align:left}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="panel">
+    <div class="ph">Practice Activity — Multiple Matters, One Entry
+      <span class="tools"><button class="hbtn" id="hint" style="display:none">Need a hint?</button><button class="hbtn" id="restart">Restart</button><span class="pill">Interactive</span></span></div>
+    <div class="scn">Read the scenario carefully, then complete the Bill4Time form below. Select the correct activity code and write the full private description — including the task performed and each matter on its own line in Litify format. <span id="modeNote"></span></div>
+  </div>
+
+  <!-- intro -->
+  <div id="intro" class="panel"><div class="sh b" style="font-size:14px">Two parts: watch it, then do it</div><div class="bd">
+    <p style="margin:0">You spent 1.5 hours doing the <b>exact same task</b> for three different clients, so you can record it as a <b>single time entry</b>. You will choose the activity code and write a private description that lists the task and each matter in Litify format.</p>
+    <ol><li><b>Part 1 – Guided walkthrough:</b> we highlight each field and show the model wording.</li><li><b>Part 2 – Practice on your own:</b> same skill, nothing highlighted. Click <i>Check My Answer</i> for feedback, and use the hint button if you get stuck.</li></ol>
+    <div class="bt"><button class="pbtn" id="goG">Start Part 1: Guided walkthrough</button></div></div></div>
+
+  <div id="mainArea" style="display:none">
+    <div class="sbox"><b>Scenario:</b> This morning you spent 1.5 hours reviewing medical records for three different clients on the same tort. For each client, you reviewed records received from their treating physician, updated the Medical History tab in Litify, and drafted a medical record summary. Since you performed the <b>exact same task</b> for all three clients, you can log this as a single time entry.
+      <div style="margin-top:10px">Use the information below to complete the form. Select the correct activity code, then write a clear private description that includes the task and all three matters.</div>
+      <div class="data"><b>Task performed:</b> Reviewed medical records, updated Medical History tab in Litify, drafted medical record summary<br><b>Matter 1:</b> SLS-2026-0441 – Hernandez, Maria – Electrostim MDI<br><b>Matter 2:</b> SLS-2026-0389 – Thompson, James – Electrostim MDI<br><b>Matter 3:</b> SLS-2026-0512 – Okonkwo, Blessing – Electrostim MDI<br><b>Time:</b> 9:00am – 10:30am</div>
+      <div class="rem"><b>💡 Reminder — Litify display name format:</b> [Matter Number] – [Client Name] – [Case Name] &nbsp;·&nbsp; List each matter on its own line in the description.</div>
+    </div>
+    <div id="prog"><div class="tr"><div class="fl" id="fl"></div></div><span id="pl"></span></div>
+
+    <div id="stepPanel" class="panel">
+      <div class="prompt" id="prompt"></div>
+      <div class="win" id="win">
+        <div class="bar">New Time Entry<span class="tm">▶ 00:00:00 ↺</span></div>
+        <div class="fm">
+          <div class="g2">
+            <div>
+              <div class="row"><label>For User:</label><span class="fld">Johnson, Sarah</span></div>
+              <div class="row"><label>Client:</label><span class="fld t">Multiple</span></div>
+              <div class="row"><label>Matter:</label><span class="fld t">Multiple</span></div>
+              <div class="row"><label class="req">Activity: *</label><div style="display:flex;align-items:center"><select class="fld sel" id="act" aria-label="Activity"></select></div></div>
+            </div>
+            <div>
+              <div class="row"><label>Entry Type:</label><span class="plain">Hourly Work</span></div>
+              <div class="row"><label>Overtime:</label><span class="chk"></span></div>
+              <div class="row"><label>Billable:</label><span class="chk">✓</span></div>
+              <div class="row"><label>Exclude From Invoice:</label><span class="chk"></span></div>
+              <div class="row" style="border:0"><label>Date Created:</label><span class="plain" style="font-weight:600">09/23/2026</span></div>
+            </div>
+          </div>
+          <div class="dh"><b style="font-size:11.5px;font-weight:600;color:var(--red)">Private Description: *</b><span class="hint">Include the task performed, then list each matter on its own line:<br>[Matter Number] – [Client Name] – [Case Name]</span></div>
+          <textarea id="desc" placeholder="Write your description here. Start with what you did, then list each matter on a new line using the Litify format..." spellcheck="false"></textarea>
+          <div class="cnt" id="cnt">0 characters</div>
+          <div class="cb"><span class="chk" style="background:#8aa4d6;border-color:#8aa4d6;color:#fff">✓</span>Show private description on the invoice?</div>
+        </div>
+        <div class="fm tg">
+          <div class="g2">
+            <div>
+              <div class="row"><label>Date of Work:</label><span class="fld sm">09/23/2026</span></div>
+              <div class="row"><label>Start Time:</label><span class="fld sm">9:00am</span></div>
+              <div class="row"><label>End Time:</label><span><span class="fld sm" style="display:inline-block;width:170px">10:30am</span><span class="get">Get Time</span></span></div>
+            </div>
+            <div>
+              <div class="row"><label>Labor Time (hrs):</label><span class="fld sm">1.50</span></div>
+              <div class="row"><label>Rate $:</label><span class="fld sm">0.00</span></div>
+              <div class="row"><label>Billable (hrs):</label><span class="fld sm">1.50</span></div>
+            </div>
+          </div>
+        </div>
+        <div id="fbk"></div>
+        <div class="foot"><button class="fb" id="bOver">Start Over</button><span class="sp"></span><button class="fb p" id="bCheck">Check My Answer</button><button class="fb d">Save &amp; Close</button><button class="fb d">Save &amp; New</button><button class="fb d">Save &amp; Duplicate</button><button class="fb" id="bCancel">Cancel</button></div>
+      </div>
+    </div>
+
+    <div id="midPanel" class="panel done" style="display:none"><div class="dh2">✓ Walkthrough complete — now it's your turn</div><div class="bd"><p style="margin:0 0 6px"><b>Nice work.</b> You chose the Medical Record Review activity and wrote a description with the task first, then each matter on its own line in Litify format.</p><p style="margin:0">In Part 2 you'll complete the form again <b>without help</b>. Click <i>Check My Answer</i> when you're done.</p></div><div class="df"><button class="pbtn" id="goP">Start Part 2: Practice on your own</button> <button class="so" id="redoG">Repeat the walkthrough</button></div></div>
+
+    <div id="donePanel" class="panel done" style="display:none"><div class="dh2">✓ Well done — entry complete!</div><div class="bd">
+      <p style="margin:0 0 6px">You correctly completed a multiple-matter entry. Here is a model answer:</p>
+      <p style="margin:0 0 4px"><b>Activity:</b> SLS_Paralegal_007_Medical Record Review</p>
+      <p style="margin:0"><b>Private Description:</b></p>
+      <div class="model" id="modelBox"></div>
+      <b>Key reminders:</b>
+      <ul class="k"><li>Same task for all three clients — one entry is acceptable.</li><li>Task description comes first, then each matter on its own line.</li><li>Each matter uses the Litify display name format: [Matter Number] – [Client Name] – [Case Name].</li><li>Description is clear, specific, and written as if a judge may read it.</li></ul>
+      <p id="errLine" style="margin:12px 0 0;color:#555;font-size:12px"></p></div>
+      <div class="df"><button class="so" id="again">Try Again</button> <button class="so" id="againG">Start over from the walkthrough</button></div></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+/* ============ EDITABLE CONTENT ============ */
+const CFG={
+  correctAct:'SLS_Paralegal_007_Medical Record Review',
+  caseName:'Electrostim MDI',
+  matters:[{num:'SLS-2026-0441',client:'Hernandez, Maria'},{num:'SLS-2026-0389',client:'Thompson, James'},{num:'SLS-2026-0512',client:'Okonkwo, Blessing'}],
+  model:'Reviewed medical records received from treating physician, updated Medical History tab in Litify, and drafted medical record summary for the following matters:\nSLS-2026-0441 – Hernandez, Maria – Electrostim MDI\nSLS-2026-0389 – Thompson, James – Electrostim MDI\nSLS-2026-0512 – Okonkwo, Blessing – Electrostim MDI',
+  activities:['001_Client Communication','002_Case Audit','003_Initial Case Review','004_CQ Retrieval','005_CQ Review','006_Medical Record Request/Follow Up','007_Medical Record Review','008_Complaint Prep/Draft/Review','009_Complaint Filing/Service','010_PFS Prep/Draft/Review','011_PFS Submission/Service','012_Tolling/Census Doc Prep/Review','013_Misc. Prep/Draft/Review','014_Misc. Filings/Submissions','015_Bellwether Identification','016_TD Processing','017_Data Clean Up','018_Case Status Mtgs/Calls with Leads/Team','019_Litigation Support/Prep','020_NOK Research/Outreach','021_Probate/Estate/Trust'].map(a=>'SLS_Paralegal_'+a)
+};
+/* guided steps */
+const GS=[
+ {h:'Step 1 of 3 — Select the activity code',p:'<span class="q">?</span><b>Which activity fits this work?</b> You reviewed medical records. Open the <b>Activity</b> list and choose <b>SLS_Paralegal_007_Medical Record Review</b>.',t:'act'},
+ {h:'Step 2 of 3 — Write the private description',p:'<span class="q">?</span><b>Write the description.</b> Start with the <b>task performed</b>, then list <b>each matter on its own line</b> using [Matter Number] – [Client Name] – [Case Name]. Type the model below, or click the button to type it for you.<span class="sample" id="smp"></span><button class="tbtn" id="typeIt">Type it for me</button>',t:'desc'},
+ {h:'Step 3 of 3 — Check your answer',p:'<span class="q">?</span><b>Your entry is filled in.</b> Click <b>Check My Answer</b> to see whether the activity code and description are both correct.',t:'check'}
+];
+let mode='guided',step=0,errors=0,tT=null,hintOn=false;
+const sel=$('#act'),desc=$('#desc');
+sel.innerHTML='<option value="">Select Activity</option>'+CFG.activities.map(a=>'<option>'+a+'</option>').join('');
+function toast(m,t){const e=$('#toast');e.className=t;e.innerHTML=m;void e.offsetWidth;e.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>e.classList.remove('show'),3400)}
+const norm=s=>s.replace(/[–—−]/g,'-');
+const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function evaluate(){
+  const issues=[];let actOK=sel.value===CFG.correctAct;
+  if(!sel.value)issues.push('Select an activity code. This work was medical record review.');
+  else if(!actOK)issues.push('The activity code <b>'+sel.value+'</b> does not match the work performed. Look for the code for reviewing medical records.');
+  const text=norm(desc.value),lines=text.split(/\n/).map(l=>l.trim()).filter(Boolean);
+  if(!lines.length)issues.push('Write the private description: the task performed, then each matter on its own line.');
+  else{
+    const idx=CFG.matters.map(m=>lines.findIndex(l=>l.includes(m.num)));
+    const first=idx.filter(i=>i>=0).length?Math.min.apply(null,idx.filter(i=>i>=0)):-1;
+    const taskText=(first<0?lines:lines.slice(0,first)).join(' ');
+    const taskOK=/review/i.test(taskText)&&/medical\s+record/i.test(taskText);
+    if(!taskOK){ if(first===0||(first<0&&!taskOK)){ /* nothing before matters */ }
+      const anywhere=/review/i.test(text)&&/medical\s+record/i.test(text);
+      issues.push(anywhere&&first===0?'Put the <b>task performed</b> first, then list the matters.':'Describe the <b>task performed</b> first (for example, reviewing medical records, updating Litify, drafting the summary).');}
+    CFG.matters.forEach((m,i)=>{
+      if(idx[i]<0){issues.push('Matter <b>'+m.num+'</b> is missing.');return}
+      const line=lines[idx[i]];
+      const others=CFG.matters.filter((o,j)=>j!==i&&line.includes(o.num));
+      if(others.length)issues.push('Each matter needs its <b>own line</b> — <b>'+m.num+'</b> shares a line with another matter.');
+      const re=new RegExp(esc(m.num)+'\\s*-\\s*'+esc(m.client)+'\\s*-\\s*'+esc(CFG.caseName).replace(/\\ /g,'\\s*'),'i');
+      if(!re.test(line))issues.push('Check the format for <b>'+m.num+'</b>: [Matter Number] – [Client Name] – [Case Name].');
+    });
+  }
+  return{actOK:actOK,issues:issues,descOK:issues.filter(i=>!/activity code/i.test(i)&&!/Select an activity/.test(i)).length===0};
+}
+function showFb(r){
+  const f=$('#fbk');f.style.display='block';
+  sel.classList.toggle('ok',r.actOK);const old=$('.tick');if(old)old.remove();if(r.actOK){const t=document.createElement('span');t.className='tick';t.textContent='✓';sel.parentNode.appendChild(t)}
+  desc.classList.toggle('ok',r.descOK&&desc.value.trim().length>0);desc.classList.toggle('bad',!r.descOK);
+  if(!r.issues.length){f.className='ok';f.innerHTML='<b>✓ Perfect!</b> Activity code and description are both correct — all three matters are included in the correct format.'}
+  else{f.className='no';f.innerHTML='<b>Almost — fix the following and check again:</b><ul>'+r.issues.map(i=>'<li>'+i+'</li>').join('')+'</ul>'}
+}
+function applyHl(){
+  document.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl'));
+  let t=null;
+  if(mode==='guided')t=GS[step].t;
+  else if(hintOn)t=!sel.value?'act':desc.value.trim().length<20?'desc':'check';
+  if(t)$(({act:'#act',desc:'#desc',check:'#bCheck'})[t]).classList.add('hl');
+}
+function renderGuided(){
+  const g=GS[step];
+  $('#prompt').style.display='';$('#prompt').innerHTML='<b style="display:block;font-size:11.5px;color:#fff;background:var(--blue);margin:-11px -16px 10px;padding:8px 16px">'+g.h+'</b>'+g.p;
+  if($('#smp'))$('#smp').textContent=CFG.model;
+  if($('#typeIt'))$('#typeIt').addEventListener('click',typeIt);
+  $('#pl').textContent='Part 1 · Guided — Step '+(step+1)+' of 3';$('#fl').style.width=(step/3*100)+'%';
+  applyHl();
+}
+function typeIt(){
+  if(step!==1)return;desc.value='';let i=0;const t=CFG.model;
+  (function n(){desc.value=t.slice(0,++i);$('#cnt').textContent=i+' characters';if(i<t.length)setTimeout(n,6);else{step=2;renderGuided();toast('Description entered — task first, then each matter on its own line.','ok')}})();
+}
+function reset(){
+  sel.value='';desc.value='';$('#cnt').textContent='0 characters';$('#fbk').style.display='none';$('#fbk').innerHTML='';
+  sel.classList.remove('ok');desc.classList.remove('ok','bad');const t=$('.tick');if(t)t.remove();hintOn=false;
+}
+function start(m){
+  mode=m;step=0;errors=0;reset();
+  $('#intro').style.display='none';$('#midPanel').style.display='none';$('#donePanel').style.display='none';
+  $('#mainArea').style.display='block';$('#stepPanel').style.display='block';$('#prog').style.display='flex';
+  $('#hint').style.display=m==='practice'?'':'none';
+  $('#modeNote').textContent=m==='guided'?'Part 1: the field you should use next is highlighted.':'Part 2: nothing is highlighted — click “Check My Answer” for feedback.';
+  if(m==='guided')renderGuided();
+  else{$('#prompt').style.display='';$('#prompt').innerHTML='<span class="q">?</span><b>Your turn.</b> Complete the form using the scenario above, then click <b>Check My Answer</b>.';$('#pl').textContent='Part 2 · Practice';$('#fl').style.width='50%';applyHl()}
+  window.scrollTo(0,0);
+}
+function success(){
+  $('#stepPanel').style.display='none';$('#fl').style.width='100%';
+  if(mode==='guided'){$('#prog').style.display='none';$('#midPanel').style.display='block';
+    try{const p=window.parent&&window.parent.GetPlayer&&window.parent.GetPlayer();if(p)p.SetVar('Multi_GuidedComplete',true)}catch(e){}
+    try{window.parent.postMessage({type:'b4t-multi-guided-complete'},'*')}catch(e){}
+    return}
+  $('#pl').textContent='Complete!';$('#modelBox').textContent=CFG.model;$('#donePanel').style.display='block';
+  $('#errLine').textContent=errors?('Checks needed in Part 2: '+(errors+1)+' (attempts before getting it right: '+errors+')'):'Correct on your first check — nicely done.';
+  try{const p=window.parent&&window.parent.GetPlayer&&window.parent.GetPlayer();if(p){p.SetVar('Multi_Complete',true);p.SetVar('Multi_Errors',errors)}}catch(e){}
+  try{window.parent.postMessage({type:'b4t-multi-complete',errors:errors},'*')}catch(e){}
+}
+/* events */
+sel.addEventListener('change',()=>{
+  if(mode==='guided'){
+    if(step!==0){return}
+    if(sel.value===CFG.correctAct){showMini();step=1;renderGuided();toast('Correct — Medical Record Review matches the work performed.','ok')}
+    else{errors++;sel.value='';toast('Not quite — choose <b>SLS_Paralegal_007_Medical Record Review</b>.','warn');shake()}
+  }else{$('#fbk').style.display='none';sel.classList.remove('ok');const t=$('.tick');if(t)t.remove();applyHl()}
+});
+function showMini(){sel.classList.add('ok');const t=document.createElement('span');t.className='tick';t.textContent='✓';sel.parentNode.appendChild(t)}
+function shake(){const w=$('#win');w.classList.remove('shake');void w.offsetWidth;w.classList.add('shake')}
+desc.addEventListener('mousedown',e=>{if(mode==='guided'&&step===0){e.preventDefault();errors++;toast('First select the <b>activity code</b>.','warn')}});
+desc.addEventListener('input',()=>{
+  $('#cnt').textContent=desc.value.length+' characters';
+  desc.classList.remove('ok','bad');
+  if(mode==='guided'&&step===1&&desc.value.length>=Math.floor(CFG.model.length*.5)&&evaluate().descOK){step=2;renderGuided()}
+  if(mode==='practice')applyHl();
+});
+$('#bCheck').addEventListener('click',()=>{
+  if(mode==='guided'){
+    if(step<2){errors++;toast('Finish the earlier steps first.','warn');shake();return}
+    const r=evaluate();showFb(r);if(!r.issues.length)setTimeout(success,900);else{toast('Some of the entry needs fixing — see the feedback below.','warn')}
+    return}
+  const r=evaluate();showFb(r);
+  if(!r.issues.length)setTimeout(success,1100);else errors++;
+});
+$('#bOver').addEventListener('click',()=>start(mode));
+$('#bCancel').addEventListener('click',()=>toast('For this practice, use <b>Check My Answer</b> to finish.','info'));
+document.querySelectorAll('.fb.d').forEach(b=>b.addEventListener('click',()=>toast('Save buttons are disabled in this practice. Use <b>Check My Answer</b>.','info')));
+$('#goG').addEventListener('click',()=>start('guided'));
+$('#goP').addEventListener('click',()=>start('practice'));
+$('#redoG').addEventListener('click',()=>start('guided'));
+$('#again').addEventListener('click',()=>start('practice'));
+$('#againG').addEventListener('click',()=>start('guided'));
+$('#restart').addEventListener('click',()=>start('guided'));
+$('#hint').addEventListener('click',()=>{hintOn=true;applyHl();toast(!sel.value?'Which activity code fits reviewing medical records?':'Task first, then each matter on its own line: [Matter Number] – [Client Name] – [Case Name].','info')});
+window.B4TMulti={state:()=>({mode,step,errors}),evaluate:evaluate};
+})();
+</script>
+</body>
+</html>
